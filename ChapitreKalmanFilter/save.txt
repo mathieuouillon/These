@@ -1,0 +1,79 @@
+\documentclass[12pt, a4paper, oneside]{report}
+
+\usepackage{minitoc}
+\usepackage[pagebackref,hyperindex=true]{hyperref}
+\usepackage{color}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{fullpage}
+\usepackage{silence}
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\Large\bfseries}{\thesection}{1em}{}
+
+\WarningFilter{minitoc(hints)}{W0023}
+\WarningFilter{minitoc(hints)}{W0024}
+\WarningFilter{minitoc(hints)}{W0028}
+\WarningFilter{minitoc(hints)}{W0030}
+
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+
+\hypersetup
+{
+bookmarksopen=true,
+pdftitle="Titre du manuscript",
+pdfauthor="Votre nom", %auteur du document
+pdfsubject="Description rapide du sujet du manuscrit", %sujet du document
+%pdftoolbar=false, %barre d'outils non visible
+pdfmenubar=true, %barre de menu visible
+pdfhighlight=/O, %effet d'un clic sur un lien hypertexte
+colorlinks=true, %couleurs sur les liens hypertextes
+pdfpagemode=UseNone, %aucun mode de page
+pdfpagelayout=SinglePage, %ouverture en simple page
+pdffitwindow=true, %pages ouvertes entierement dans toute la fenetre
+linkcolor=linkcol, %couleur des liens hypertextes internes
+citecolor=citecol, %couleur des liens pour les citations
+urlcolor=linkcol %couleur des liens pour les url
+}
+
+
+\makeatletter
+\newcommand{\chapternamefont}{\scshape\Large}% Chapter name font
+\newcommand{\chaptertitlefont}{\LARGE\bfseries}% Chapter title font
+\def\@makechapterhead#1{%
+%  \vspace*{10\p@}%
+  {\parindent \z@ \raggedright \normalfont
+    \begin{flushright}
+      \ifnum \c@secnumdepth >\m@ne
+        \if@mainmatter
+%          \huge\bfseries 
+          {\Large \scshape \@chapapp\space \thechapter}
+          \par\nobreak
+%        \vskip 0\p@
+        \fi
+      \fi
+      \interlinepenalty\@M
+      \Huge \bfseries #1\par\nobreak
+      \hrulefill
+    \end{flushright}
+    \vskip 20\p@
+  }}
+\makeatother
+
+
+
+
+
+\begin{document}
+
+
+\dominitoc
+\tableofcontents
+\chapter{Filtre de Kalman}
+\minitoc
+
+\section{Filtre de Kalman (KF)}
+\section{Filtre de Kalman étendu (EKF)}
+\section{Application du EKF pour le tracking}
+\end{document}

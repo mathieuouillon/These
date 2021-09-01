@@ -1,0 +1,104 @@
+\documentclass[a4paper,11pt]{StyleThese}
+\include{formatAndDefs}
+
+\begin{document}
+\dominitoc
+\tableofcontents
+
+\chapter{Filtre de Kalman}
+\minitoc
+
+\section{Filtre de Kalman}
+
+Le Filtre de Kalman (KF) et son extension au temps continu appelé Filtre de Kalman-Bucy permettent de résoudre de façon optimale le problème du filtrage linéaire, quand les bruits du système sont additifs et gaussiens. Depuis 1960,
+le filtre de Kalman a été intensivement utilisé dans des applications diverses tel que l'aéronautique, la balistique etc., et a donné lieu à de nombreuses recherches. 
+
+L'algorithme de filtrage assume un systeme dynamique linéaire discret dans le temps dont l’évolution dynamique est modélisée à l’aide de l’équation d’état :
+
+\begin{equation}
+  x_k = F_kx_{k-1} + B_k u_{k-1} + w_k
+  \label{equation d'etat}
+\end{equation}
+
+
+où $k \geq 0$ représente les instants successifs du temps, $F_k$ est la matrice d'état (dimension $(n\times x)$), $x_k$ est le vecteur des variables d'état (dimension $(n\times 1)$), $B_k$ est la matrice d'entrée (dimension $(n\times l)$), $u_k$ est le vecteur de contrôle (dimension $(l\times 1)$) et $w_k$ est le bruit du système (dimension $(n\times 1)$) (moyenne nulle et distribution gaussienne).
+\\
+
+Le filtre assume aussi la disponibilité d'un ensembles de mesures qui sont aussi une fonction linéaire des variables d'état :
+\begin{equation}
+  z_k = H_kx_k + v_k
+  \label{equation mesure}
+\end{equation}
+
+où $H_k$ est la matrice de mesure et $v_k$ est le bruit de la mesure non correller avec $w_k$ (moyenne nulle et distribution gaussienne).
+
+Le filtre de Kalman est un algorithme récursif qui exploite la connaissance du covariance attendue des variables d'état pour corriger l'estimation a priori des deux l'état du système et la covariance elle-même. 
+L'algorithme peut être divisé en deux étapes (dans les équations suivantes, l'indice $_{k|k-1}$ après une variable indique sa valeur estimée avant la mise à jour de la mesure, tandis que l'indice $_{k|k}$ ou $_k$ indique l'estimation après la mise a jour).
+
+\textbf{Etape de prédiction :} a cette étape, le vecteur d'état est prédit grace au modèle du système : 
+\begin{equation}
+  x_{k|k-1} = F_{k-1} x_{k-1} + B_{k-1}u_{k-1}
+\end{equation}
+
+La matrice de covariance au temps $k$ est aussi prédit : 
+\begin{equation}
+  P_{k|k-1} = F_{k-1}P_{k-1}F^T_{k-1} + Q_{k-1} 
+\end{equation}
+où $Q_k$ est la matrice de covariance du bruit du système $w_k$ dans l'équation \ref{equation d'etat}
+
+
+\textbf{Etape de mise a jour :} a cette étape, la prediction a priori est mise à jour en fonction des mesures : 
+\begin{equation}
+  x_{k} = x_{k|k-1} + K_k(z_k - H_kx_{k|k-1})
+  \label{mise a jour vecteur}
+\end{equation}
+
+et la matrice de covariance est aussi mise a jour : 
+\begin{equation}
+  P_k = (I-K_kH_k)P_{k|k-1}
+  \label{mise a jour covariance}
+\end{equation}
+La matrice $K_k$ dans les équations \ref{mise a jour vecteur} et \ref{mise a jour covariance} est la matrice de gain de Kalman optimal au temps $k$ : 
+\begin{equation}
+  K_k = P_{k|k-1}H_k^T(H_kP_{k|k-1}H_k^T + R_k)^{-1}
+\end{equation}
+où $R_k$ est la matrice de covariance du bruit de mesure $v_k$ dans l'équation \ref{equation mesure}.
+\section{Filtre de Kalman étendu}
+L'une des principales limitations du filtre de Kalman est le fait qu'il nécessite à la fois
+le système dynamique et les fonctions de mesure doivent être linéaires par rapport à la
+variables d'état. Dans de nombreuses applications pratiques, ces exigences ne sont pas satisfaites.
+Le filtre de Kalman étendu est une version modifiée du filtre de Kalman standard qui
+peut être appliqué lorsque le système et/ou le modèle de mesure sont non linéaires.
+
+L'équation \ref{equation d'etat non lineaire} est l'equation non linéaire qui décrit le modèle du système :
+\begin{equation}
+  x_k = f_k(x_{k-1}) + w_k
+  \label{equation d'etat non lineaire}
+\end{equation}
+L'équation du modèle de mesure non linéaire est :
+\begin{equation}
+  z_k = h_k(x_k) + v_k
+\end{equation}
+
+\textbf{Étape de prediction :} 
+\begin{equation}
+  x_{k|k-1} = f_k(x_{k-1})
+\end{equation}
+\begin{equation}
+  P_{k|k-1} = F_{k-1}P_{k-1}F^T_{k-1} + Q_{k-1} 
+\end{equation}
+
+\textbf{Etape de mise a jour :}
+\begin{equation}
+  x_{k} = x_{k|k-1} + K_k(z_k - h_k(x_{k|k-1}))
+\end{equation}
+\begin{equation}
+  P_k = (I-K_kH_k)P_{k|k-1}
+\end{equation}
+\begin{equation}
+  K_k = P_{k|k-1}H_k^T(H_kP_{k|k-1}H_k^T + R_k)^{-1}
+\end{equation}
+où $F_k$ et $H_k$ représentent les matrices jacobiennes de $f_k$ et $h_k$. Soit $F_k = \frac{\partial f}{\partial x_k}$ et $h_k = \frac{\partial h}{\partial x_k}$.
+\section{Application du EKF au tracking dans BONuS}
+
+\end{document}

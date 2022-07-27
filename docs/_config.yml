@@ -1,1 +1,21 @@
-theme: jekyll-theme-cayman
+theme:
+  name: material
+  custom_dir: src/overrides
+  palette:
+    - scheme: cpalgo
+      primary: deep purple
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate 
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  logo: favicon.ico
+  favicon: favicon.ico
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - toc.integrate
